@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Treino Ativo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ rotina.nome }}</h1>
+            <p style="color: #2e7d32; font-weight: 600;">TREINO EM ANDAMENTO</p>
+        </header>
+
+        <main class="grid-rotinas">
+            <form action="/" method="GET">
+                {% for exercicio in rotina.exercicios %}
+                <div class="card-rotina" style="opacity: 1; transform: none; margin-bottom: 20px;">
+                    <div class="card-header">
+                        <h2>{{ exercicio.nome }}</h2>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #888; margin-top: 5px;">
+                            <span class="foco">Meta: {{ exercicio.series }}x{{ exercicio.repeticoes }}</span>
+                            <!-- Mostrador do último peso -->
+                            <span>Última carga: <strong style="color: #2e7d32; font-size: 1rem;">{{ ultimos_pesos[exercicio.nome] }}kg</strong></span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <input type="number" class="input-treino" placeholder="Carga (kg)" required>
+                        <input type="number" class="input-treino" placeholder="Reps Feitas" required>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <!-- Botões de Ação -->
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn-iniciar" style="flex: 2;">FINALIZAR</button>
+                    <!-- O botão de descartar é um link que te joga de volta pra home sem salvar nada -->
+                    <a href="/" class="btn-descartar">DESCARTAR</a>
+                </div>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

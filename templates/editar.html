@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Rotina</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EDITAR <span>TREINO</span></h1>
+            <p>{{ rotina.nome }} - {{ rotina.foco }}</p>
+        </header>
+
+        <main>
+            <div class="card-rotina visible" style="opacity: 1; transform: none; margin-bottom: 20px;">
+                <h2 style="margin-bottom: 15px;">Exercícios Atuais</h2>
+                <ul style="list-style: none;">
+                    {% for exercicio in rotina.exercicios %}
+                    <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding: 12px 0;">
+                        <div>
+                            <strong style="color: #fff; display: block;">{{ exercicio.nome }}</strong>
+                            <span style="color: #888; font-size: 0.85rem;">{{ exercicio.series }}x{{ exercicio.repeticoes }}</span>
+                        </div>
+                        <a href="/remover_exercicio/{{ rotina.id }}/{{ exercicio.nome }}" style="color: #ff3333; text-decoration: none; font-size: 0.85rem; font-weight: bold;">REMOVER</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Adicionar Novo Exercício -->
+            <div class="card-rotina visible" style="opacity: 1; transform: none;">
+                <h2 style="margin-bottom: 15px;">Adicionar Exercício</h2>
+                <form action="/adicionar_exercicio/{{ rotina.id }}" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
+                    <input type="text" name="nome" class="input-treino" placeholder="Nome do Exercício" required>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" name="series" class="input-treino" placeholder="Séries" required>
+                        <input type="number" name="reps" class="input-treino" placeholder="Repetições" required>
+                    </div>
+                    <button type="submit" class="btn-iniciar" style="margin-top: 10px; background-color: #333;">+ ADICIONAR</button>
+                </form>
+            </div>
+
+            <a href="/" class="btn-iniciar" style="display: block; text-align: center; text-decoration: none; margin-top: 20px;">SALVAR E VOLTAR</a>
+        </main>
+    </div>
+</body>
+</html>

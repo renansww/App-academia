@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Desempenho e Frequência</title>
+    <!-- Puxa o seu CSS principal -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Estilos exclusivos e limpos para o Calendário e o Streak */
+        .streak-box {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .streak-box h2 { color: white; font-size: 2rem; margin: 0; }
+        
+        .calendario-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7 colunas para os dias da semana */
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .dia {
+            aspect-ratio: 1; /* Mantém o formato quadradinho */
+            background-color: #222;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        /* Classe que pinta o dia de verde se ele estiver na lista enviada pelo Python */
+        .dia.treinado { 
+            background-color: #2e7d32; 
+            color: white; 
+            font-weight: bold; 
+            border: 1px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <header>
+            <h1>SEU <span>DESEMPENHO</span></h1>
+            <a href="/" style="color: #888; text-decoration: none; font-size: 0.9rem;">&larr; VOLTAR AOS TREINOS</a>
+        </header>
+
+        <!-- 1. Bloco do Streak (Sequência Semanal) -->
+        <div class="streak-box">
+            <h2>🔥 {{ sequencia_semanal }} Semanas</h2>
+            <span style="color: #c8e6c9; font-size: 0.9rem;">Sequência invicta atual</span>
+        </div>
+
+       <!-- 2. Bloco do Calendário de Frequência com Navegação -->
+        <div class="card-rotina" style="opacity: 1; transform: none;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Frequência do Mês</h2>
+                
+                <!-- Área das setinhas e nome dinâmico do mês -->
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <!-- Setinha Esquerda: Aponta para o mês anterior usando o parâmetro ?mes=X -->
+                    <a href="/desempenho?mes={{ mes_anterior }}" style="color: #888; text-decoration: none; font-size: 1.2rem; font-weight: bold; transition: color 0.2s;" title="Mês Anterior">&larr;</a>
+                    
+                    <!-- Nome do mês que veio do Python -->
+                    <span class="foco" style="font-size: 0.95rem; text-transform: uppercase;">{{ nome_mes }}</span>
+                    
+                    <!-- Setinha Direita: Aponta para o próximo mês -->
+                    <a href="/desempenho?mes={{ mes_proximo }}" style="color: #888; text-decoration: none; font-size: 1.2rem; font-weight: bold; transition: color 0.2s;" title="Próximo Mês">&rarr;</a>
+                </div>
+            </div>
+            
+            <!-- Grid que desenha os dias dinamicamente de acordo com a variável 'total_dias' do Python -->
+            <div class="calendario-grid">
+                {% for dia in range(1, total_dias + 1) %}
+                    <div class="dia {% if dia in dias_treinados %}treinado{% endif %}">
+                        {{ dia }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

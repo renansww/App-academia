@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker Profissional</title>
+<!-- comando do flask para encontrar o css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MEUS <span>TREINOS</span></h1>
+            <p>Selecione a rotina de hoje</p>
+        <!-- a rota desempenho que criei no app.py -->
+            <a href="/desempenho" style="color: #2e7d32; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Histórico de treinos &rarr;</a>
+        </header>
+
+        <main class="grid-rotinas">
+<!-- repita o bloco de rotinas cada vez q o python mandar uma rotina -->
+            {% for rotina in rotinas %}
+            <div class="card-rotina fade-in">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div>
+        <h2>{{ rotina.nome }}</h2>
+        <span class="foco">{{ rotina.foco }}</span>
+    </div>
+        <!-- Parte de editar rotinas -->
+    <a href="/editar/{{ rotina.id }}" class="btn-editar" title="Editar Rotina">
+<!-- icone em svg da setinha de editar -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+<!-- termina o icone aqui -->
+    </a>
+</div>
+<!-- isso aqui é a lista de exercicios que fica na tela inicial antes de entrar realmente na rotina, um preview -->
+                <ul class="preview-exercicios">
+                    {% for exercicio in rotina.exercicios %}
+                        <li>{{ exercicio.nome }} ({{ exercicio.series }}x{{ exercicio.repeticoes }})</li>
+                    {% endfor %}
+                </ul>
+    <!-- todos os rotina.id pega a rotina la do python -->
+                <a href="/treino/{{ rotina.id }}" class="btn-iniciar" style="display: block; text-align: center; text-decoration: none;">Iniciar Treino</a>
+            </div>
+            {% endfor %}<!-- o loop so termina aqui, e tudo isso será repetido quantas rotinas tiver -->
+        
+        </main>
+    </div>
+
+    <script>
+        // Animação cascata para os cards aparecerem um por vez
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.fade-in');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, index * 150); // Atraso progressivo
+            });
+        });
+    </script>
+</body>
+</html>

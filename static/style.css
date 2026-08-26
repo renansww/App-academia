@@ -1,0 +1,214 @@
+
+/* Importa a fonte 'Inter' do Google Fonts (fonte limpa, muito usada em apps modernos) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+/* O asterisco (*) seleciona TODOS os elementos do site. 
+   Zeramos margin e padding para o navegador não bagunçar nosso layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Garante que as bordas não aumentem o tamanho final das caixas */
+    font-family: 'Inter', sans-serif; /* Aplica a fonte Inter em tudo */
+}
+
+/* O corpo principal do site. Aqui definimos o Modo Escuro. */
+body {
+    background-color: #000000; /* Fundo totalmente preto para economizar bateria no celular (OLED) */
+    color: #ffffff;            /* Texto padrão em branco */
+    line-height: 1.6;          /* Melhora a leitura dando um respiro entre as linhas de texto */
+}
+
+/* 
+=========================================================
+2. ESTRUTURA E LAYOUT (GRIDS E CONTAINERS)
+=========================================================
+*/
+
+/* Container centraliza o aplicativo na tela. 
+   No celular ele ocupa a tela toda (com 20px de respiro dos lados). 
+   No computador, ele trava na largura de 500px, imitando a tela de um celular. */
+.container {
+    max-width: 500px;
+    margin: 0 auto; /* O 'auto' nas laterais empurra a caixa para o centro da tela */
+    padding: 30px 20px;
+}
+
+/* O cabeçalho do site (onde fica o título) */
+header {
+    margin-bottom: 40px;
+}
+
+/* Título principal (h1) */
+header h1 {
+    font-size: 2rem;
+    font-weight: 800;    /* Deixa a fonte bem grossa (bold) */
+    letter-spacing: -1px; /* Junta as letras um pouquinho para um visual mais agressivo */
+}
+
+/* O 'span' é usado para pintar apenas uma palavra do título de verde */
+header h1 span {
+    color: #2e7d32; /* Verde escuro profissional */
+}
+
+header p {
+    color: #888; /* Texto de subtítulo em cinza claro para não roubar a atenção */
+    font-size: 0.9rem;
+}
+
+/* Essa classe transforma a área das rotinas em um 'Flexbox',
+   empilhando os treinos um embaixo do outro com 20px de espaço (gap) entre eles */
+.grid-rotinas {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 
+=========================================================
+3. CARDS (AS CAIXAS DOS TREINOS) E ANIMAÇÕES
+=========================================================
+*/
+
+/* O estilo das caixas onde ficam os treinos e gráficos */
+.card-rotina {
+    background-color: #111111; /* Um cinza quase preto, para destacar do fundo totalmente preto */
+    border: 1px solid #222;    /* Borda super sutil */
+    border-radius: 16px;       /* Arredonda as pontas da caixa */
+    padding: 24px;
+    
+    /* Configuração inicial da Animação (Começa invisível e mais baixo) */
+    opacity: 0; 
+    transform: translateY(20px);
+    
+    /* Quando o JS colocar a classe '.visible', a transição vai durar 0.6 segundos, bem suave */
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Classe ativada pelo JavaScript para fazer o card subir e aparecer na tela */
+.card-rotina.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-header {
+    margin-bottom: 16px;
+}
+
+.card-header h2 {
+    font-size: 1.25rem;
+    color: #ffffff;
+}
+
+/* Estilo para a palavra que indica o foco do treino ou as séries */
+.foco {
+    font-size: 0.85rem;
+    color: #2e7d32;      /* Cor verde */
+    font-weight: 600;
+    text-transform: uppercase; /* Força todas as letras a ficarem MAIÚSCULAS */
+    letter-spacing: 1px;
+}
+
+/* A lista de exercícios na página inicial (tiramos as bolinhas padrão da lista) */
+.preview-exercicios {
+    list-style: none; 
+    margin-bottom: 24px;
+}
+
+/* Cada linha da lista de exercícios ganha uma bordinha cinza embaixo */
+.preview-exercicios li {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+    border-bottom: 1px solid #222;
+    padding: 8px 0;
+}
+
+/* O último item da lista não precisa da bordinha embaixo */
+.preview-exercicios li:last-child {
+    border-bottom: none;
+}
+
+/* 
+=========================================================
+4. CAMPOS DE DIGITAÇÃO (INPUTS)
+=========================================================
+*/
+
+.input-treino {
+    width: 100%;
+    padding: 12px;
+    background-color: #1a1a1a;
+    border: 2px solid #333;
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none; /* Regra de ouro: remove aquela borda azul feia padrão dos navegadores */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* O estado ":focus" acontece exatamente quando o usuário clica dentro da caixa para digitar */
+.input-treino:focus {
+    border-color: #2e7d32; /* A borda fica verde */
+    box-shadow: 0 0 10px rgba(46, 125, 50, 0.3); /* Cria um brilho/sombra verde esfumaçado ao redor */
+}
+
+/* 
+=========================================================
+5. BOTÕES DE AÇÃO
+=========================================================
+*/
+
+/* Botão principal de Salvar / Iniciar Treino */
+.btn-iniciar {
+    width: 100%;
+    padding: 14px;
+    background-color: #1b5e20; /* Fundo verde padrão */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer; /* Transforma o mouse em uma 'mãozinha' ao passar por cima */
+    transition: background-color 0.2s ease;
+}
+
+/* O estado ":hover" é quando o usuário passa o mouse por cima (no celular, quando ele toca) */
+.btn-iniciar:hover {
+    background-color: #2e7d32; /* Fica um verde mais claro para indicar que pode ser clicado */
+}
+
+/* Botão de Descartar / Cancelar (Secundário) */
+.btn-descartar {
+    flex: 1; 
+    text-align: center; 
+    text-decoration: none; /* Remove o sublinhado do link */
+    padding: 14px; 
+    background-color: #1a1a1a; 
+    color: #ff3333; /* Texto em vermelho para sinalizar "Cuidado / Cancelamento" */
+    border: 1px solid #333;
+    border-radius: 8px; 
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Ao passar o mouse, o botão descartar inverte as cores (fundo vermelho, texto branco) */
+.btn-descartar:hover {
+    background-color: #ff3333;
+    color: #ffffff;
+    border-color: #ff3333;
+}
+
+/* O ícone (setinha) de editar na página inicial */
+.btn-editar {
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+/* Dá um "zoom" sutil de 10% no ícone quando passa o mouse */
+.btn-editar:hover {
+    transform: scale(1.1); 
+}
+
+/* Pinta a linha (stroke) do ícone SVG de branco ao passar o mouse */
+.btn-editar svg:hover {
+    stroke: #ffffff; 
+}

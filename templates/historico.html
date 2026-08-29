@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theload - Histórico de Carga</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Importando o Chart.js para o gráfico de evolução -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Histórico de <span>Carga</span></h1>
+            <p class="foco">{{ nome_exercicio }}</p>
+            <a href="javascript:history.back()" class="btn-voltar mt-10" style="display: inline-block;">&larr; VOLTAR AO TREINO</a>
+        </header>
+
+        {% if registros %}
+        <!-- Gráfico de Evolução -->
+        <div class="card-rotina fade-in visible mb-20" style="background-color: #0d0d0d; padding: 15px; color: #e0e0e0;">
+            <div class="card-header">
+                <h2>Gráfico de Evolução (kg)</h2>
+            </div>
+            <div>
+                <canvas id="graficoCarga"></canvas>
+            </div>
+        </div>
+
+        <!-- Lista de Histórico -->
+        <div class="card-rotina fade-in visible">
+            <div class="card-header">
+                <h2>Registros de Treino</h2>
+            </div>
+            <ul class="lista-limpa">
+                {% for registro in registros|reverse %}
+                <li class="lista-item">
+                    <div>
+                        <span class="item-titulo">{{ registro.data }}</span>
+                    </div>
+                    <div>
+                        <span class="item-meta" style="color: #e0e0e0; font-weight: bold; font-size: 1.1rem;">{{ registro.peso_kg }} kg</span>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <script>
+            // Dados vindos do backend (Flask) para o JavaScript
+            const datasX = {{ datas | tojson }};
+            const pesosY = {{ pesos | tojson }};
+
+            const ctx = document.getElementById('graficoCarga').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: datasX,
+                    datasets: [{
+                        label: 'Carga (kg)',
+                        data: pesosY,
+                        borderColor: '#e0e0e0',
+                        backgroundColor: 'rgba(224, 224, 224, 0.1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.3 // Suaviza a linha do gráfico
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: '#1f1f1f' },
+                            ticks: { color: '#888888' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#888888' }
+                        }
+                    }
+                }
+            });
+        </script>
+        {% else %}
+        <div class="card-rotina fade-in visible" style="text-align: center; padding: 40px 20px;">
+            <h2 style="color: #666666;">Nenhum histórico encontrado</h2>
+            <p class="mt-10">Você ainda não registrou cargas para este exercício.</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

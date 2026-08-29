@@ -2,44 +2,80 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Treino Ativo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theload</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>{{ rotina.nome }}</h1>
-            <p style="color: #2e7d32; font-weight: 600;">TREINO EM ANDAMENTO</p>
+            <p class="foco">TREINO EM ANDAMENTO</p>
         </header>
 
+        <div class="card-rotina card-cronometro fade-in">
+            <h2 class="cronometro-titulo">Tempo de Treino</h2>
+            <div id="cronometro" class="cronometro-display">00:00</div>
+            <button type="button" id="btn-timer-control" class="btn-cronometro">PAUSAR / RETOMAR</button>
+        </div>
+
         <main class="grid-rotinas">
-            <form action="/" method="GET">
+            <form action="/finalizar_treino" method="POST" id="form-treino" onsubmit="prepararEnvio(event)">
+                
+                <input type="hidden" id="tempo_final" name="tempo_total" class="input-hidden" value="00:00">
+                <input type="hidden" id="dados_treino" name="dados_treino" value="">
+
+                <div id="lista-exercicios">
+
                 {% for exercicio in rotina.exercicios %}
-                <div class="card-rotina" style="opacity: 1; transform: none; margin-bottom: 20px;">
-                    <div class="card-header">
-                        <h2>{{ exercicio.nome }}</h2>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #888; margin-top: 5px;">
-                            <span class="foco">Meta: {{ exercicio.series }}x{{ exercicio.repeticoes }}</span>
-                            <!-- Mostrador do último peso -->
-                            <span>Última carga: <strong style="color: #2e7d32; font-size: 1rem;">{{ ultimos_pesos[exercicio.nome] }}kg</strong></span>
+                <div class="card-rotina fade-in exercicio-card" data-nome="{{ exercicio.nome }}">
+                    <div class="card-header flex-between-start">
+                        <div>
+                            <h2>{{ exercicio.nome }}</h2>
+                            <span class="foco">Meta: {{ exercicio.series | length }} séries</span>
                         </div>
+                        <a href="/historico/{{ exercicio.nome }}" class="link-destaque" style="font-size: 0.75rem; display: flex; align-items: center; gap: 5px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                            Histórico
+                        </a>
                     </div>
                     
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <input type="number" class="input-treino" placeholder="Carga (kg)" required>
-                        <input type="number" class="input-treino" placeholder="Reps Feitas" required>
+                    <div class="series-container mt-15">
+                        {% for serie in exercicio.series %}
+                        <div class="form-linha serie-linha fade-in visible mb-15" style="align-items: center;">
+                            <select class="input-treino input-tipo-serie" style="flex: 1; {% if serie.tipo == 'Aquecimento' %}color: #4caf50;{% elif serie.tipo == 'Falha' %}color: #f44336;{% endif %}" onchange="verificarCor(this)">
+                                <option value="Normal" {% if serie.tipo == 'Normal' %}selected{% endif %}>Normal</option>
+                                <option value="Aquecimento" {% if serie.tipo == 'Aquecimento' %}selected{% endif %}>Aquecimento</option>
+                                <option value="Falha" {% if serie.tipo == 'Falha' %}selected{% endif %}>Falha</option>
+                            </select>
+                            <input type="number" class="input-treino input-carga" style="flex: 1;" placeholder="Kg" oninput="autoFillCarga(this)">
+                            <input type="number" class="input-treino input-reps" style="flex: 1;" placeholder="Reps (Meta: {{ serie.meta_reps }})" oninput="autoFillReps(this)">
+                            <input type="checkbox" class="checkbox-serie" style="transform: scale(1.5); margin: 0 10px; cursor: pointer;">
+                        </div>
+                        {% endfor %}
                     </div>
+                    <button type="button" class="btn-cronometro mt-10 btn-add-serie" onclick="adicionarSerie(this, '{{ exercicio.nome }}')">+ Adicionar Série</button>
                 </div>
                 {% endfor %}
+                </div>
+                <div class="card-rotina fade-in mb-20" style="padding: 15px;">
+                    <h3 class="foco mb-15">Adicionar Exercício Extra</h3>
+                    <div class="form-linha">
+                        <input type="text" id="novo_exercicio_nome" class="input-treino" placeholder="Nome do exercício">
+                        <button type="button" class="btn-secundario" style="padding: 0 15px; border-radius: 4px; color: #fff; cursor:pointer;" onclick="adicionarExercicioExtra()">+</button>
+                    </div>
+                </div>
                 
-                <!-- Botões de Ação -->
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="submit" class="btn-iniciar" style="flex: 2;">FINALIZAR</button>
-                    <!-- O botão de descartar é um link que te joga de volta pra home sem salvar nada -->
+                <div class="form-acoes fade-in">
+                    <button type="submit" class="btn-iniciar">FINALIZAR TREINO</button>
                     <a href="/" class="btn-descartar">DESCARTAR</a>
                 </div>
             </form>
         </main>
     </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

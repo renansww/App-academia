@@ -1,90 +1,101 @@
+/* =========================================================
+   1. FONTES E RESET GLOBAL (DESIGN PROFISSIONAL E BAIXO CONTRASTE)
+   ========================================================= */
 
-/* Importa a fonte 'Inter' do Google Fonts (fonte limpa, muito usada em apps modernos) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 
-/* O asterisco (*) seleciona TODOS os elementos do site. 
-   Zeramos margin e padding para o navegador não bagunçar nosso layout */
+/* O reset universal garante que todos os navegadores exibam o layout da mesma forma */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Garante que as bordas não aumentem o tamanho final das caixas */
-    font-family: 'Inter', sans-serif; /* Aplica a fonte Inter em tudo */
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
 }
 
-/* O corpo principal do site. Aqui definimos o Modo Escuro. */
+/* Fundo preto suave e texto padrão em cinza claro para evitar cansaço visual */
 body {
-    background-color: #000000; /* Fundo totalmente preto para economizar bateria no celular (OLED) */
-    color: #ffffff;            /* Texto padrão em branco */
-    line-height: 1.6;          /* Melhora a leitura dando um respiro entre as linhas de texto */
+    background-color: #080808;
+    color: #b0b0b0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* 
-=========================================================
-2. ESTRUTURA E LAYOUT (GRIDS E CONTAINERS)
-=========================================================
-*/
+/* =========================================================
+   2. ESTRUTURA E LAYOUT GERAL
+   ========================================================= */
 
-/* Container centraliza o aplicativo na tela. 
-   No celular ele ocupa a tela toda (com 20px de respiro dos lados). 
-   No computador, ele trava na largura de 500px, imitando a tela de um celular. */
 .container {
     max-width: 500px;
-    margin: 0 auto; /* O 'auto' nas laterais empurra a caixa para o centro da tela */
+    margin: 0 auto;
     padding: 30px 20px;
 }
 
-/* O cabeçalho do site (onde fica o título) */
 header {
     margin-bottom: 40px;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 15px;
 }
 
-/* Título principal (h1) */
 header h1 {
     font-size: 2rem;
-    font-weight: 800;    /* Deixa a fonte bem grossa (bold) */
-    letter-spacing: -1px; /* Junta as letras um pouquinho para um visual mais agressivo */
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #e0e0e0;
+    text-transform: uppercase;
 }
 
-/* O 'span' é usado para pintar apenas uma palavra do título de verde */
+/* Destaque sutil no título usando cinza */
 header h1 span {
-    color: #2e7d32; /* Verde escuro profissional */
+    color: #777777; 
 }
 
 header p {
-    color: #888; /* Texto de subtítulo em cinza claro para não roubar a atenção */
+    color: #777777;
     font-size: 0.9rem;
+    margin-top: 5px;
 }
 
-/* Essa classe transforma a área das rotinas em um 'Flexbox',
-   empilhando os treinos um embaixo do outro com 20px de espaço (gap) entre eles */
 .grid-rotinas {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* 
-=========================================================
-3. CARDS (AS CAIXAS DOS TREINOS) E ANIMAÇÕES
-=========================================================
-*/
+/* =========================================================
+   3. CLASSES UTILITÁRIAS
+   ========================================================= */
 
-/* O estilo das caixas onde ficam os treinos e gráficos */
-.card-rotina {
-    background-color: #111111; /* Um cinza quase preto, para destacar do fundo totalmente preto */
-    border: 1px solid #222;    /* Borda super sutil */
-    border-radius: 16px;       /* Arredonda as pontas da caixa */
-    padding: 24px;
-    
-    /* Configuração inicial da Animação (Começa invisível e mais baixo) */
-    opacity: 0; 
-    transform: translateY(20px);
-    
-    /* Quando o JS colocar a classe '.visible', a transição vai durar 0.6 segundos, bem suave */
-    transition: opacity 0.6s ease, transform 0.6s ease;
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Classe ativada pelo JavaScript para fazer o card subir e aparecer na tela */
+.flex-between-start {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.mb-15 { margin-bottom: 15px; }
+.mb-20 { margin-bottom: 20px; }
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+
+/* =========================================================
+   4. CARDS E COMPONENTES DE INTERFACE
+   ========================================================= */
+
+.card-rotina {
+    background-color: #111111;
+    border: 1px solid #1f1f1f;
+    border-radius: 8px;
+    padding: 24px;
+    opacity: 0; 
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
 .card-rotina.visible {
     opacity: 1;
     transform: translateY(0);
@@ -96,119 +107,389 @@ header p {
 
 .card-header h2 {
     font-size: 1.25rem;
-    color: #ffffff;
+    color: #e0e0e0;
+    font-weight: 600;
 }
 
-/* Estilo para a palavra que indica o foco do treino ou as séries */
 .foco {
     font-size: 0.85rem;
-    color: #2e7d32;      /* Cor verde */
-    font-weight: 600;
-    text-transform: uppercase; /* Força todas as letras a ficarem MAIÚSCULAS */
+    color: #888888;
+    font-weight: 500;
+    text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-/* A lista de exercícios na página inicial (tiramos as bolinhas padrão da lista) */
+/* =========================================================
+   5. LISTAS E COMPONENTES INTERNOS
+   ========================================================= */
+
+.lista-limpa {
+    list-style: none;
+}
+
+.lista-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 12px 0;
+}
+
+.item-titulo {
+    color: #e0e0e0;
+    display: block;
+    font-weight: 600;
+}
+
+.item-meta {
+    color: #777777;
+    font-size: 0.85rem;
+}
+
 .preview-exercicios {
     list-style: none; 
     margin-bottom: 24px;
 }
 
-/* Cada linha da lista de exercícios ganha uma bordinha cinza embaixo */
 .preview-exercicios li {
     font-size: 0.9rem;
-    color: #a0a0a0;
-    border-bottom: 1px solid #222;
-    padding: 8px 0;
+    color: #888888;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 10px 0;
 }
 
-/* O último item da lista não precisa da bordinha embaixo */
 .preview-exercicios li:last-child {
     border-bottom: none;
 }
 
-/* 
-=========================================================
-4. CAMPOS DE DIGITAÇÃO (INPUTS)
-=========================================================
-*/
+/* =========================================================
+   6. FORMULÁRIOS E CAMPOS DE DIGITAÇÃO
+   ========================================================= */
+
+.form-coluna {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-linha {
+    display: flex;
+    gap: 10px;
+}
 
 .input-treino {
     width: 100%;
     padding: 12px;
-    background-color: #1a1a1a;
-    border: 2px solid #333;
-    color: #ffffff;
-    border-radius: 8px;
+    background-color: #050505;
+    border: 1px solid #222222;
+    color: #e0e0e0;
+    border-radius: 4px;
     font-size: 1rem;
-    outline: none; /* Regra de ouro: remove aquela borda azul feia padrão dos navegadores */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-/* O estado ":focus" acontece exatamente quando o usuário clica dentro da caixa para digitar */
 .input-treino:focus {
-    border-color: #2e7d32; /* A borda fica verde */
-    box-shadow: 0 0 10px rgba(46, 125, 50, 0.3); /* Cria um brilho/sombra verde esfumaçado ao redor */
+    border-color: #777777;
+    background-color: #0a0a0a;
 }
 
-/* 
-=========================================================
-5. BOTÕES DE AÇÃO
-=========================================================
-*/
+/* =========================================================
+   7. BOTÕES E LINKS (ALTO CONTRASTE SUAVIZADO)
+   ========================================================= */
 
-/* Botão principal de Salvar / Iniciar Treino */
+/* Botão de ação primária (fundo cinza claro/branco suave, texto escuro) */
 .btn-iniciar {
     width: 100%;
     padding: 14px;
-    background-color: #1b5e20; /* Fundo verde padrão */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
+    background-color: #e0e0e0;
+    color: #080808;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.95rem;
     font-weight: 600;
-    cursor: pointer; /* Transforma o mouse em uma 'mãozinha' ao passar por cima */
-    transition: background-color 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: block;
+    text-align: center;
+    text-decoration: none;
 }
 
-/* O estado ":hover" é quando o usuário passa o mouse por cima (no celular, quando ele toca) */
 .btn-iniciar:hover {
-    background-color: #2e7d32; /* Fica um verde mais claro para indicar que pode ser clicado */
+    background-color: #ffffff;
+    border-color: #ffffff;
 }
 
-/* Botão de Descartar / Cancelar (Secundário) */
+.btn-secundario {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    border-color: #2a2a2a;
+}
+
+.btn-secundario:hover {
+    background-color: #333333;
+    border-color: #333333;
+}
+
+/* Botão de descarte/remoção em Vermelho Sóbrio (Baixo Contraste) */
 .btn-descartar {
     flex: 1; 
-    text-align: center; 
-    text-decoration: none; /* Remove o sublinhado do link */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
     padding: 14px; 
-    background-color: #1a1a1a; 
-    color: #ff3333; /* Texto em vermelho para sinalizar "Cuidado / Cancelamento" */
-    border: 1px solid #333;
-    border-radius: 8px; 
+    background-color: #140a0a; 
+    color: #ff5c5c; 
+    border: 1px solid #3b1717;
+    border-radius: 4px; 
+    font-size: 0.95rem;
     font-weight: 600;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
 }
 
-/* Ao passar o mouse, o botão descartar inverte as cores (fundo vermelho, texto branco) */
 .btn-descartar:hover {
-    background-color: #ff3333;
+    background-color: #ff5c5c;
     color: #ffffff;
-    border-color: #ff3333;
+    border-color: #ff5c5c;
 }
 
-/* O ícone (setinha) de editar na página inicial */
+.link-destaque {
+    color: #aaaaaa;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: color 0.2s;
+}
+
+.link-destaque:hover {
+    color: #ffffff;
+}
+
+.btn-voltar {
+    color: #777777;
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+}
+
+.btn-voltar:hover {
+    color: #e0e0e0;
+}
+
+.btn-remover {
+    color: #ff5c5c;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.btn-remover:hover {
+    opacity: 0.8;
+}
+
+.form-acoes {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.form-acoes .btn-iniciar {
+    flex: 2;
+    width: auto;
+}
+
 .btn-editar {
     padding: 5px;
-    transition: transform 0.2s ease;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    opacity: 0.6;
 }
 
-/* Dá um "zoom" sutil de 10% no ícone quando passa o mouse */
 .btn-editar:hover {
-    transform: scale(1.1); 
+    opacity: 1;
 }
 
-/* Pinta a linha (stroke) do ícone SVG de branco ao passar o mouse */
-.btn-editar svg:hover {
-    stroke: #ffffff; 
+.btn-editar svg {
+    stroke: #aaaaaa; 
+}
+
+/* =========================================
+   8. COMPONENTE: CRONÔMETRO DE TREINO
+   ========================================= */
+
+.card-cronometro {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 20px;
+}
+
+.cronometro-titulo {
+    color: #777777;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.cronometro-display {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #e0e0e0;
+    margin: 5px 0 15px 0;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -2px;
+}
+
+.btn-cronometro {
+    width: auto;
+    padding: 8px 20px;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.btn-cronometro:hover {
+    background-color: #e0e0e0;
+    color: #080808;
+}
+
+.input-hidden {
+    display: none;
+}
+
+/* =========================================
+   9. COMPONENTES DE DESEMPENHO (CALENDÁRIO E STREAK) - BAIXO CONTRASTE
+   ========================================= */
+
+.streak-box {
+    background: #111111;
+    border: 1px solid #1f1f1f;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.streak-box h2 { 
+    color: #e0e0e0; 
+    font-size: 2rem; 
+    margin: 0; 
+}
+
+.streak-subtexto {
+    color: #777777;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.calendario-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.dia {
+    aspect-ratio: 1; 
+    background-color: #121212;
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #444444; /* Números discretos para não incomodar */
+}
+
+/* Dia treinado com verde musgo escuro e fechado de baixo contraste */
+.dia.treinado { 
+    background-color: #1b331e; 
+    color: #98cb9b; 
+    font-weight: 600; 
+    border: 1px solid #27472b;
+}
+
+.nav-mes {
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
+}
+
+.btn-nav-mes {
+    color: #777777; 
+    text-decoration: none; 
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    transition: color 0.2s;
+}
+
+.btn-nav-mes:hover {
+    color: #e0e0e0;
+}
+
+.mes-atual {
+    font-size: 0.95rem; 
+    text-transform: uppercase;
+    color: #e0e0e0;
+    font-weight: 600;
+}
+
+/* =========================================
+   10. ESTILOS DE TREINO DINÂMICO
+   ========================================= */
+
+.input-tipo-serie {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23777777' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
+.checkbox-serie {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    background-color: #050505;
+    border: 1px solid #222222;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.checkbox-serie:checked {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+}
+
+.checkbox-serie:checked::after {
+    content: '';
+    width: 6px;
+    height: 12px;
+    border: solid #080808;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    display: block;
+    margin-bottom: 2px;
 }

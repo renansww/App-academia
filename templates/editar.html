@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Rotina</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -9,40 +10,47 @@
     <div class="container">
         <header>
             <h1>EDITAR <span>TREINO</span></h1>
-            <p>{{ rotina.nome }} - {{ rotina.foco }}</p>
+            <p class="foco">{{ rotina.nome }} - {{ rotina.foco }}</p>
         </header>
 
         <main>
-            <div class="card-rotina visible" style="opacity: 1; transform: none; margin-bottom: 20px;">
-                <h2 style="margin-bottom: 15px;">Exercícios Atuais</h2>
-                <ul style="list-style: none;">
+            <!-- Bloco de Listagem e Remoção -->
+            <div class="card-rotina visible mb-20">
+                <h2 class="mb-15">Exercícios Atuais</h2>
+                <ul class="lista-limpa">
                     {% for exercicio in rotina.exercicios %}
-                    <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding: 12px 0;">
+                    <li class="lista-item">
                         <div>
-                            <strong style="color: #fff; display: block;">{{ exercicio.nome }}</strong>
-                            <span style="color: #888; font-size: 0.85rem;">{{ exercicio.series }}x{{ exercicio.repeticoes }}</span>
+                            <strong class="item-titulo">{{ exercicio.nome }}</strong>
+                            <span class="item-meta">{{ exercicio.series | length }} séries</span>
                         </div>
-                        <a href="/remover_exercicio/{{ rotina.id }}/{{ exercicio.nome }}" style="color: #ff3333; text-decoration: none; font-size: 0.85rem; font-weight: bold;">REMOVER</a>
+                        <a href="/remover_exercicio/{{ rotina.id }}/{{ exercicio.nome }}" class="btn-remover">REMOVER</a>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
 
-            <!-- Adicionar Novo Exercício -->
-            <div class="card-rotina visible" style="opacity: 1; transform: none;">
-                <h2 style="margin-bottom: 15px;">Adicionar Exercício</h2>
-                <form action="/adicionar_exercicio/{{ rotina.id }}" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Bloco de Inserção de Novo Exercício -->
+            <div class="card-rotina visible">
+                <h2 class="mb-15">Theload- Novo Exercício</h2>
+                <form action="/adicionar_exercicio/{{ rotina.id }}" method="POST" class="form-coluna" id="form-novo-exercicio" onsubmit="prepararEnvioEdicao(event)">
                     <input type="text" name="nome" class="input-treino" placeholder="Nome do Exercício" required>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="number" name="series" class="input-treino" placeholder="Séries" required>
-                        <input type="number" name="reps" class="input-treino" placeholder="Repetições" required>
+                    <input type="hidden" name="dados_series" id="dados_series_edicao" value="">
+                    
+                    <h3 class="foco mt-10">Séries Planejadas</h3>
+                    <div class="series-container-edicao">
+                        <!-- Linhas adicionadas via JS -->
                     </div>
-                    <button type="submit" class="btn-iniciar" style="margin-top: 10px; background-color: #333;">+ ADICIONAR</button>
+                    <button type="button" class="btn-cronometro mt-10" onclick="adicionarSerieEdicao(this)">+ ADICIONAR SÉRIE</button>
+                    
+                    <button type="submit" class="btn-iniciar mt-20 btn-secundario">SALVAR EXERCÍCIO NA ROTINA</button>
                 </form>
             </div>
 
-            <a href="/" class="btn-iniciar" style="display: block; text-align: center; text-decoration: none; margin-top: 20px;">SALVAR E VOLTAR</a>
+            <a href="/" class="btn-iniciar mt-20">SALVAR E VOLTAR</a>
         </main>
     </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

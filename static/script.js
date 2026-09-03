@@ -1,11 +1,6 @@
-/* =========================================
-   1. ANIMAÇÕES GERAIS DE INTERFACE
-   ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    // Busca todos os elementos que possuem a classe 'fade-in'
     const cards = document.querySelectorAll('.fade-in');
-    
-    // Aplica o efeito cascata, exibindo os elementos com um pequeno atraso progressivo
+
     cards.forEach((card, index) => {
         setTimeout(() => {
             card.classList.add('visible');
@@ -13,9 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-/* =========================================
-   2. MOTOR DO CRONÔMETRO
-   ========================================= */
 let segundos = 0;
 let minutos = 0;
 let intervalo = null;
@@ -26,11 +18,9 @@ function iniciarCronometro() {
     const inputTempoFinal = document.getElementById('tempo_final');
 
     if (rodando) {
-        // Pausa a execução do cronômetro limpando o intervalo
         clearInterval(intervalo);
         rodando = false;
     } else {
-        // Inicia a execução do cronômetro
         rodando = true;
         intervalo = setInterval(() => {
             segundos++;
@@ -39,39 +29,29 @@ function iniciarCronometro() {
                 segundos = 0;
             }
 
-            // Garante o formato de dois dígitos (ex: 05:09)
             const txtMin = minutos < 10 ? "0" + minutos : minutos;
             const txtSeg = segundos < 10 ? "0" + segundos : segundos;
             const tempoFormatado = `${txtMin}:${txtSeg}`;
 
-            // Sincroniza a interface e o formulário
             if (display) display.innerText = tempoFormatado;
             if (inputTempoFinal) inputTempoFinal.value = tempoFormatado;
         }, 1000);
     }
 }
 
-// Inicializa os controles do cronômetro caso os elementos existam na página
 document.addEventListener('DOMContentLoaded', () => {
     const btnPlay = document.getElementById('btn-timer-control');
     if (btnPlay) {
         btnPlay.addEventListener('click', iniciarCronometro);
     }
-    
-    // Auto-inicialização na tela de treino
+
     if (document.getElementById('cronometro')) {
         iniciarCronometro();
     }
 });
 
-/* =========================================
-   3. GESTÃO DE TREINO DINÂMICO
-   ========================================= */
-
 function adicionarSerie(btn, nomeExercicio) {
-    const container = btn.previousElementSibling; // div.series-container
-    const numSeries = container.children.length + 1;
-    
+    const container = btn.previousElementSibling;
     const divLinha = document.createElement('div');
     divLinha.className = 'form-linha serie-linha fade-in mb-15';
     divLinha.style.alignItems = 'center';
@@ -89,7 +69,6 @@ function adicionarSerie(btn, nomeExercicio) {
     
     container.appendChild(divLinha);
     
-    // Anima a série nova
     setTimeout(() => {
         divLinha.classList.add('visible');
     }, 10);
@@ -163,14 +142,11 @@ function adicionarExercicioExtra() {
     setTimeout(() => {
         divCard.classList.add('visible');
     }, 10);
-    
-    nomeInput.value = ""; // limpa o campo
+    nomeInput.value = "";
 }
 
 function prepararEnvio(event) {
-    // Evita o envio padrão inicialmente
     event.preventDefault();
-    
     const listaExercicios = document.querySelectorAll('.exercicio-card');
     const dadosFinais = [];
     
@@ -201,21 +177,12 @@ function prepararEnvio(event) {
             });
         }
     });
-    
-    // Coloca os dados no input hidden em formato JSON string
     document.getElementById('dados_treino').value = JSON.stringify(dadosFinais);
-    
-    // Submete o formulário
     event.target.submit();
 }
 
-/* =========================================
-   4. GESTÃO DE SÉRIES NA EDIÇÃO DE ROTINA
-   ========================================= */
-
 function adicionarSerieEdicao(btn) {
-    const container = btn.previousElementSibling; // div.series-container-edicao
-    
+    const container = btn.previousElementSibling;
     const divLinha = document.createElement('div');
     divLinha.className = 'form-linha serie-edicao-linha fade-in mb-15';
     divLinha.style.alignItems = 'center';
@@ -253,8 +220,6 @@ function prepararEnvioEdicao(event) {
             meta_reps: meta_reps
         });
     });
-    
-    // Se não adicionou nenhuma série, avisa o usuário (opcional, mas bom)
     if (series.length === 0) {
         alert("Adicione pelo menos uma série ao exercício!");
         return;

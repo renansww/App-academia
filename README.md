@@ -1,5 +1,5 @@
 # TheLoad
-Aplicação web Flask para controle de rotinas de treino, acompanhamento de exercícios e histórico de cargas. Projeto de portfólio demonstrando habilidades de desenvolvimento full-stack.
+Aplicação web Flask para controle de rotinas de treino, acompanhamento de exercícios e histórico de cargas.
 
 ## Funcionalidades
 
@@ -9,16 +9,18 @@ Aplicação web Flask para controle de rotinas de treino, acompanhamento de exer
 - **Calendário de Treinos** — Calendário visual com frequência e consistência dos treinos
 - **Interface Responsiva** — UI limpa e mobile-first com CSS/JS vanilla
 
-## Projeto:
-| Backend: Python 3, Flask 3 
-| Frontend: HTML5, CSS3, JavaScript
-| Templates: Jinja2
-| Dados: Em memória  — FUTURAMENTE SQLITE
-| Gráficos: Chart.js (via CDN)
+## Stack
+- Backend: Python 3, Flask 3
+- Frontend: HTML5, CSS3, JavaScript
+- Templates: Jinja2
+- Dados: em memória (mock)
+- Gráficos: Chart.js (via CDN)
 
 
-### Instalação
-- em ambiente virtual (venv) e python 3
+## Instalação
+1. Crie e ative um ambiente virtual (venv).
+2. Instale as dependências do projeto.
+3. Execute a aplicação Flask.
 
 
 ## Detalhes de Implementação
@@ -26,7 +28,7 @@ Aplicação web Flask para controle de rotinas de treino, acompanhamento de exer
 ### Modelos de Dados
 - `Exercicio` — Exercício individual com nome, séries (tipo + repetições alvo), grupo muscular
 - `Rotina` — Rotina de treino contendo múltiplos exercícios com ID único e foco principal
-- utilização de rotas com decorador @ 
+- Rotas Flask com decoradores `@app.route`
 
 ### Próximos Passos
 - [ ] Substituir dados mock por SQLite/SQLAlchemy
